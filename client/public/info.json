@@ -1,0 +1,34 @@
+{
+  "sections": [
+    {
+      "id": "erd-symbols",
+      "title": "ERD Symbols & Cardinalities",
+      "html": "<p><strong>1-1 (One-to-One):</strong> Each row in table A relates to at most one row in table B. Example: User ↔ Profile (one user has one profile).</p><p><strong>1-N (One-to-Many):</strong> One row in table A can relate to many rows in table B. Example: Department → Employees (one department has many employees).</p><p><strong>N-M (Many-to-Many):</strong> Many rows in A can relate to many rows in B. Usually resolved by a junction/join table. Example: Students ↔ Courses (many students take many courses).</p>"
+    },
+    {
+      "id": "ra-notation",
+      "title": "Relational Algebra Notation",
+      "html": "<p>Relational Algebra uses mathematical notation to describe operations on relations (tables). The symbols below represent common operations:</p><ul><li><strong>π (Projection):</strong> Selects specific columns. Written as: π<sub>column1,column2</sub>(Relation)</li><li><strong>σ (Selection):</strong> Filters rows based on a condition. Written as: σ<sub>condition</sub>(Relation)</li><li><strong>ρ (Rename):</strong> Renames a relation or its attributes. Written as: ρ<sub>NewName</sub>(Relation)</li><li><strong>⨝ (Join):</strong> Combines rows from two relations. Written as: Relation1 ⨝ Relation2</li><li><strong>∪ (Union):</strong> Combines all rows from two relations (removes duplicates)</li><li><strong>− (Difference):</strong> Returns rows in Relation1 that are not in Relation2</li><li><strong>× (Cartesian Product):</strong> Creates all combinations of rows from two relations</li></ul>"
+    },
+    {
+      "id": "diagram-to-ra",
+      "title": "Translating Your Diagram to RA",
+      "html": "<h4>Entities → Relations</h4><p>Each entity in your ERD becomes a relation (table) in RA. Example:</p><code>Students = {id:integer PK, name:string, email:varchar}</code><p>The attributes and their types are listed inside the braces. PK denotes primary key, FK denotes foreign key.</p><h4>Relationships → RA Notation</h4><p>Relationships between entities are notated with their cardinality:</p><ul><li><strong>1:1 Relationship:</strong> <code>Students 1:1 Profiles</code> — One student has one profile</li><li><strong>1:N Relationship:</strong> <code>Department 1:N Employees</code> — One department has many employees</li><li><strong>M:N Relationship:</strong> <code>Students M:N Courses</code> — Many students take many courses (usually needs a junction table)</li></ul>"
+    },
+    {
+      "id": "working-with-ra",
+      "title": "Using the RA Editor",
+      "html": "<h3>Step 1: Build Your Diagram</h3><p>Use the <strong>Diagram</strong> tab to create entities, define attributes, and add relationships between them.</p><h3>Step 2: View RA Representation</h3><p>Switch to the <strong>Relational Algebra</strong> tab. Your diagram is automatically translated into RA notation showing:</p><ul><li>All entities with their attributes and types</li><li>All relationships with cardinality indicators</li></ul><h3>Step 3: Edit and Refine</h3><p>Use the RA editor to view and edit your schema structure. The symbol buttons (π, σ, ρ, ⨝, ∪, −, ×) help you write RA expressions if you want to document operations on your schema.</p><h3>Step 4: Sync Back to Diagram</h3><p>Changes made in the diagram are automatically reflected in the RA view. Edit your entities and relationships in either view.</p>"
+    },
+    {
+      "id": "examples",
+      "title": "Example: University Database",
+      "html": "<h4>Diagram View:</h4><ul><li>Entity: <strong>Students</strong> (id, name, email, gpa)</li><li>Entity: <strong>Departments</strong> (dept_id, dept_name)</li><li>Entity: <strong>Courses</strong> (course_id, course_name, credits)</li><li>Entity: <strong>Enrollments</strong> (enrollment_id, grade) — junction table</li><li>Relationship: Students 1:N Enrollments</li><li>Relationship: Courses 1:N Enrollments</li></ul><h4>RA Notation:</h4><pre>Students = {id:integer PK, name:string, email:varchar, gpa:float}\nDepartments = {dept_id:integer PK, dept_name:string}\nCourses = {course_id:integer PK, course_name:string, credits:integer}\nEnrollments = {enrollment_id:integer PK, grade:string}\n\nStudents 1:N Enrollments\nCourses 1:N Enrollments</pre>"
+    },
+    {
+      "id": "tips",
+      "title": "Tips & Best Practices",
+      "html": "<ul><li><strong>Use clear naming:</strong> Entity and attribute names should be descriptive (e.g., 'StudentID' instead of 'id')</li><li><strong>Mark primary keys:</strong> Always mark the primary key attribute with PK</li><li><strong>Mark foreign keys:</strong> If an attribute links to another table, mark it as FK</li><li><strong>Use appropriate types:</strong> Choose data types that match your data (integer for IDs, string for names, etc.)</li><li><strong>Resolve M:N relationships:</strong> Many-to-many relationships should use a junction table with 1:N relationships</li><li><strong>Symbol buttons:</strong> Use the toolbar buttons to quickly insert RA symbols when documenting complex operations</li><li><strong>Keep it normalized:</strong> Avoid redundant attributes and ensure each entity has a clear purpose</li></ul>"
+    }
+  ]
+}

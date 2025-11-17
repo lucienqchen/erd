@@ -1,44 +1,49 @@
-import React, { useState } from 'react'
-import { DiagramProvider } from './context/DiagramContext'
-import { useDiagramPersistence } from './hooks/useDiagramPersistence'
-import Canvas from './components/Canvas'
-import Sidebar from './components/Sidebar'
-import Inspector from './components/Inspector'
-import RAEditor from './components/RAEditor'
-import InfoTab from './components/InfoTab'
+import React, { useState } from 'react';
+import { DiagramProvider } from './DiagramContext';
+import Toolbar from './Toolbar';
+import ERDCanvas from './ERDCanvas';
+import JSONEditor from './JSONEditor';
+import './App.css';
 
-function AppContent() {
-  const [tab, setTab] = useState<'diagram'|'ra'|'info'>('diagram')
-  const [selectedEntityId, setSelectedEntityId] = useState<string | null>(null)
-  useDiagramPersistence()
+const App: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'diagram' | 'json'>('diagram');
 
-  return (
-    <div className="app-root">
-      <div className="topbar">
-        <div className="logo">ERD Tool</div>
-        <div className="top-actions">
-          <button onClick={() => setTab('diagram')}>Diagram</button>
-          <button onClick={() => setTab('ra')}>Relational Algebra</button>
-          <button onClick={() => setTab('info')}>Info</button>
-        </div>
-      </div>
-      <div className="layout">
-        <Sidebar />
-        <main className="main-canvas">
-          {tab === 'diagram' && <Canvas onSelectEntity={setSelectedEntityId} />}
-          {tab === 'ra' && <RAEditor />}
-          {tab === 'info' && <InfoTab />}
-        </main>
-        <Inspector selectedEntityId={selectedEntityId} />
-      </div>
-    </div>
-  )
-}
-
-export default function App() {
   return (
     <DiagramProvider>
-      <AppContent />
+      <div className="app">
+        <Toolbar />
+        
+        {/* Tab Navigation */}
+        <div className="tab-bar">
+          <button 
+            className={`tab-button ${activeTab === 'diagram' ? 'active' : ''}`}
+            onClick={() => setActiveTab('diagram')}
+          >
+            📊 Diagram
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'json' ? 'active' : ''}`}
+            onClick={() => setActiveTab('json')}
+          >
+            📝 JSON
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        <div className="main-content">
+          {activeTab === 'diagram' ? (
+            <div className="canvas-panel">
+              <ERDCanvas />
+            </div>
+          ) : (
+            <div className="json-panel-full">
+              <JSONEditor />
+            </div>
+          )}
+        </div>
+      </div>
     </DiagramProvider>
-  )
-}
+  );
+};
+
+export default App;

@@ -1,0 +1,54 @@
+{
+  "entities": [
+    {
+      "name": "User",
+      "attributes": [
+        { "name": "id", "type": "UUID", "PK": true },
+        { "name": "email", "type": "VARCHAR(255)" },
+        { "name": "username", "type": "VARCHAR(100)" },
+        { "name": "created_at", "type": "TIMESTAMP" }
+      ]
+    },
+    {
+      "name": "Post",
+      "attributes": [
+        { "name": "id", "type": "UUID", "PK": true },
+        { "name": "title", "type": "VARCHAR(255)" },
+        { "name": "content", "type": "TEXT" },
+        { "name": "author_id", "type": "UUID", "FK": true, "references": "User.id" },
+        { "name": "created_at", "type": "TIMESTAMP" }
+      ]
+    },
+    {
+      "name": "Comment",
+      "attributes": [
+        { "name": "id", "type": "UUID", "PK": true },
+        { "name": "content", "type": "TEXT" },
+        { "name": "post_id", "type": "UUID", "FK": true, "references": "Post.id" },
+        { "name": "user_id", "type": "UUID", "FK": true, "references": "User.id" },
+        { "name": "created_at", "type": "TIMESTAMP" }
+      ]
+    },
+    {
+      "name": "Tag",
+      "attributes": [
+        { "name": "id", "type": "UUID", "PK": true },
+        { "name": "name", "type": "VARCHAR(50)" }
+      ]
+    },
+    {
+      "name": "PostTag",
+      "attributes": [
+        { "name": "post_id", "type": "UUID", "PK": true, "FK": true, "references": "Post.id" },
+        { "name": "tag_id", "type": "UUID", "PK": true, "FK": true, "references": "Tag.id" }
+      ]
+    }
+  ],
+  "relationships": [
+    { "from": "User", "to": "Post", "type": "one-to-many" },
+    { "from": "Post", "to": "Comment", "type": "one-to-many" },
+    { "from": "User", "to": "Comment", "type": "zero-or-many" },
+    { "from": "Post", "to": "PostTag", "type": "one-to-many" },
+    { "from": "Tag", "to": "PostTag", "type": "one-to-many" }
+  ]
+}

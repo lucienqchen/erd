@@ -1,42 +1,24 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const path = require('path');
-
-const raEngine = require('./ra/engine');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5001;
 
+// Middleware
 app.use(cors());
-app.use(bodyParser.json({ limit: '10mb' }));
+app.use(express.json());
 
-app.get('/api/ping', (req, res) => {
-  res.json({ ok: true, time: Date.now() });
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', message: 'ERD Server is running' });
 });
 
-// Execute a relational algebra operation. Expects a JSON body:
-// { tables: { name: [ {col:val}, ... ] }, op: { type: 'project'|'select'|... , args: {...} } }
-app.post('/api/ra/execute', async (req, res) => {
-  try {
-    const { tables, op } = req.body;
-    if (!tables || !op) {
-      return res.status(400).json({ error: 'Missing tables or op in request body' });
-    }
-    const result = raEngine.execute(op, tables);
-    res.json({ result });
-  } catch (err) {
-    console.error('RA execute error:', err);
-    res.status(500).json({ error: String(err) });
-  }
-});
-
-// Static serve for production build (optional)
-app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
-});
+// Future API routes can be added here
+// For example:
+// - POST /api/diagrams - Save diagram
+// - GET /api/diagrams/:id - Load diagram
+// - POST /api/algebra/query - Process relational algebra queries
 
 app.listen(PORT, () => {
-  console.log(`ERD server listening on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

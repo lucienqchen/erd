@@ -55,7 +55,7 @@ export const EditorPage: FC = () => {
           value={code}
           onChange={handleCodeChange}
           language="dbml"
-          theme="vs-dark"
+          theme="vs"
         />
       </div>
     </div>

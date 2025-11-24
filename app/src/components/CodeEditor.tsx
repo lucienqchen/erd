@@ -1,5 +1,5 @@
 import { FC, useRef } from 'react';
-import Editor, { OnMount } from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 import type { editor } from 'monaco-editor';
 import './CodeEditor.css';
 
@@ -20,10 +20,10 @@ export const CodeEditor: FC<CodeEditorProps> = ({
 }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
-  const handleEditorDidMount: OnMount = (editor, monaco) => {
+  const handleEditorDidMount = (editor: editor.IStandaloneCodeEditor, monaco: any) => {
     editorRef.current = editor;
 
-    // Register DBML language (basic SQL-like syntax for now)
+    // Register DBML syntax (SQL-like for now)
     monaco.languages.register({ id: 'dbml' });
     monaco.languages.setMonarchTokensProvider('dbml', {
       keywords: [
@@ -85,7 +85,7 @@ export const CodeEditor: FC<CodeEditorProps> = ({
         onChange={handleEditorChange}
         onMount={handleEditorDidMount}
         options={{
-          minimap: { enabled: true },
+          minimap: { enabled: false },
           fontSize: 14,
           lineNumbers: 'on',
           roundedSelection: false,

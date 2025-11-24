@@ -1,25 +1,24 @@
 ---
-name: "Modern React Project Template"
-description: "A comprehensive development guide for modern frontend projects based on React 18 + TypeScript + Vite, including complete development standards and best practices"
-category: "Frontend Framework"
-author: "Agents.md Collection"
-authorUrl: "https://github.com/gakeez/agents_md_collection"
-tags: ["react", "typescript", "vite", "frontend", "spa"]
-lastUpdated: "2024-12-19"
+name: "Entity Relationship Diagram App"
+description: "A web application specialized for data modeling with ERDs and DBML based on React 19 + TypeScript + Vite, including complete development standards and best practices
+category: "Frontend Guidelines"
+author: "Lucien Chen"
+tags: ["react", "typescript", "vite", "reactflow", "monaco-edito"]
+lastUpdated: "2025-11-23"
 ---
 
 # Modern React Project Development Guide
 
 ## Project Overview
 
-This is a modern frontend project template based on React 18, TypeScript, and Vite. It's suitable for building high-performance Single Page Applications (SPA) with integrated modern development toolchain and best practices.
+This is a modern frontend agents template based on React 19, TypeScript and Vite. Suitable for building Single Page Applications (SPAs) with a modern dev toolkit and best practices.
 
 ## Tech Stack
 
-- **Frontend Framework**: React 18 + TypeScript
+- **Frontend Framework**: React 19 + TypeScript + React Flow + Monaco Editor
 - **Build Tool**: Vite
-- **State Management**: Zustand / Redux Toolkit
-- **Routing**: React Router v6
+- **State Management**: Zustand
+- **Routing**: React Router v7
 - **UI Components**: Ant Design / Material-UI
 - **Styling**: Tailwind CSS / Styled-components
 - **Testing Framework**: Vitest + React Testing Library
@@ -32,21 +31,13 @@ app/
 │   └── vite.svg
 ├── src/
 │   ├── components/         # Reusable components
-│   │   ├── common/        # Common components (to be created)
-│   │   ├── ui/            # UI components (to be created)
-│   │   └── Navbar.tsx     # Existing navbar
+│   │   ├── Navbar.tsx      # Navigation Bar
+│   │   ├── Canvas.tsx      # Canvas for diagramming
+│   │   └── CodeEditor.tsx  # Code editor for DBML
 │   ├── pages/             # Page components (to be created)
 │   │   ├── HomePage.tsx
 │   │   ├── CanvasPage.tsx
 │   │   └── EditorPage.tsx
-│   ├── hooks/             # Custom Hooks (to be created)
-│   │   └── useAuth.ts
-│   ├── store/             # State management (to be created)
-│   │   └── appStore.ts
-│   ├── services/          # API services (to be created)
-│   │   └── api.ts
-│   ├── utils/             # Utility functions (to be created)
-│   │   └── helpers.ts
 │   ├── types/             # TypeScript type definitions (to be created)
 │   │   └── index.ts
 │   ├── styles/            # Global styles (to be created)
@@ -144,7 +135,7 @@ export const useUserStore = create<UserState>((set) => ({
 ## Environment Setup
 
 ### Development Requirements
-- Node.js >= 18.0.0
+- Node.js >= 19.0.0
 - npm >= 8.0.0 or yarn >= 1.22.0
 
 ### Installation Steps
@@ -165,6 +156,37 @@ npm install -D @types/node
 # 5. Start development server
 npm run dev
 ```
+
+## Git Workflow
+
+### Commit Message Convention
+```
+type(scope): subject
+
+feat: add table creation feature
+fix: resolve edge rendering issue
+docs: update API documentation
+style: format code with prettier
+refactor: restructure store logic
+test: add unit tests for Canvas
+chore: update dependencies
+```
+
+### Branch Strategy
+- `main` - production-ready code
+- `develop` - integration branch
+- `feature/*` - new features
+- `fix/*` - bug fixes
+- `hotfix/*` - urgent production fixes
+
+### Examples
+- feat(canvas): add drag-and-drop table creation
+- fix(editor): correct Monaco editor resize behavior
+- docs(readme): update installation instructions
+- refactor(store): migrate from Context API to Zustand
+- style(global): format all files with Prettier
+- test(components): increase Navbar test coverage to 90%
+- chore(deps): update React to v19.0.0
 
 ### Environment Variables Configuration
 ```env

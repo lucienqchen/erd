@@ -7,17 +7,21 @@
 
 /* Controls styling */
 .react-flow__controls {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
     border-radius: 8px;
 }
 
 .react-flow__controls-button {
-    border-bottom: 1px solid #e2e8f0;
-    background: white;
+    border-bottom: 1px solid #ffffff;
+    background: rgb(250, 250, 250);
+}
+
+.react-flow__controls-button svg {
+    fill: #2b2828;
 }
 
 .react-flow__controls-button:hover {
-    background: #f7fafc;
+    background: #ffffff;
 }
 
 /* MiniMap styling */

@@ -1,14 +1,13 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback } from 'react';
 import {
     ReactFlow,
     Controls,
     Background,
+    BackgroundVariant,
     useNodesState,
     useEdgesState,
     addEdge,
     type Connection,
-    MiniMap,
-    Panel
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import './Canvas.css';
@@ -38,12 +37,11 @@ export const Canvas: FC<CanvasProps> = ({ className }) => {
                 attributionPosition="bottom-right"
             >
                 <Controls />
-                <MiniMap />
-                <Background color="#aaa" gap={16} />
-
-                <Panel position="top-left">
-                    <div className="canvas-info"></div>
-                </Panel>
+                <Background 
+                    variant={BackgroundVariant.Dots}
+                    color="#aaa" 
+                    gap={16} 
+                />
             </ReactFlow>
         </div>
     );

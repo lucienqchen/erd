@@ -1,0 +1,49 @@
+.canvas-wrapper {
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    position: relative;
+}
+
+/* Controls styling */
+.react-flow__controls {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.react-flow__controls-button {
+    border-bottom: 1px solid #e2e8f0;
+    background: white;
+}
+
+.react-flow__controls-button:hover {
+    background: #f7fafc;
+}
+
+/* MiniMap styling */
+.react-flow__minimap {
+    background-color: #f7fafc;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Canvas info panel */
+.canvas-info {
+    background: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+    color: #4a5568;
+}
+
+/* Edge styling */
+.react-flow__edge-path {
+    stroke: #cbd5e0;
+    stroke-width: 2;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+    stroke: #4299e1;
+    stroke-width: 3;
+}

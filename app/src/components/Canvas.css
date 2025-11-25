@@ -8,12 +8,13 @@
 /* Controls styling */
 .react-flow__controls {
     box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border-radius: 0px;
 }
 
 .react-flow__controls-button {
     border-bottom: 1px solid #ffffff;
-    background: rgb(250, 250, 250);
+    background: rgb(255, 255, 255);
+    border-radius: 0px;
 }
 
 .react-flow__controls-button svg {
@@ -24,12 +25,6 @@
     background: #ffffff;
 }
 
-/* MiniMap styling */
-.react-flow__minimap {
-    background-color: #f7fafc;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
 
 /* Canvas info panel */
 .canvas-info {

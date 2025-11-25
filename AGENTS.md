@@ -65,6 +65,11 @@ app/
 
 ## Development Guidelines
 
+
+### General Development Standards
+
+1. Highlight the code that was there before and explain what is happening after changes are made
+
 ### Component Development Standards
 
 1. **Function Components First**: Use function components and Hooks

@@ -1,0 +1,41 @@
+.canvas-toolbar {
+  position: fixed;
+  top: 75px;
+  left: 10px;
+  z-index: 1000;
+  display: flex;
+  gap: 8px;
+  background: white;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.toolbar-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #ffffff;
+  color: white;
+  border: none;
+  border-radius: 0px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toolbar-button:hover {
+  background: #eeeeee;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+}
+
+.toolbar-button:active {
+  transform: translateY(0);
+}
+
+.toolbar-button .text {
+  font-size: 13px;
+  color: #000000;
+}

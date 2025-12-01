@@ -23,4 +23,5 @@ main {
   flex: 1;
   overflow: hidden;
   display: flex;
+  margin-top: 65px; /* Account for fixed navbar height */
 }

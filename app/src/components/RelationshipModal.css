@@ -1,0 +1,151 @@
+.relationship-modal {
+    max-width: 700px;
+}
+
+.relationship-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px;
+    background: #f7fafc;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.relationship-preview .entity-name {
+    font-weight: 600;
+    color: #2d3748;
+    padding: 6px 12px;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid #e2e8f0;
+}
+
+.relationship-preview .relationship-arrow {
+    display: flex;
+    align-items: center;
+    color: #718096;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.relationship-preview .cardinality-symbol {
+    color: #4299e1;
+    font-weight: bold;
+    margin: 0 4px;
+}
+
+.cardinality-selectors {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.cardinality-selector h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.cardinality-selector .selector-description {
+    margin: 0 0 12px 0;
+    font-size: 12px;
+    color: #718096;
+}
+
+.cardinality-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cardinality-option {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #ffffff;
+}
+
+.cardinality-option:hover {
+    border-color: #cbd5e0;
+    background-color: #f7fafc;
+}
+
+.cardinality-option.selected {
+    border-color: #4299e1;
+    background-color: #ebf8ff;
+}
+
+.cardinality-option input[type="radio"] {
+    margin-right: 10px;
+    margin-top: 3px;
+    accent-color: #4299e1;
+}
+
+.cardinality-option .option-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cardinality-option .option-symbol {
+    font-family: monospace;
+    font-size: 14px;
+    color: #4a5568;
+    font-weight: bold;
+}
+
+.cardinality-option .option-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.cardinality-option .option-description {
+    font-size: 11px;
+    color: #718096;
+}
+
+/* Legend for reference */
+.crows-foot-legend {
+    margin-top: 16px;
+    padding: 12px;
+    background: #f7fafc;
+    border-radius: 6px;
+}
+
+.crows-foot-legend h5 {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a5568;
+    text-transform: uppercase;
+}
+
+.legend-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #4a5568;
+}
+
+.legend-item .symbol {
+    font-family: monospace;
+    font-weight: bold;
+    color: #2d3748;
+    min-width: 40px;
+}

@@ -1,13 +1,16 @@
-import { FC, memo } from 'react';
-import { Handle, Position, type NodeProps } from '@xyflow/react';
+import { memo, type FC } from 'react';
+import { Handle, Position, type NodeProps, type Node } from '@xyflow/react';
 import type { Entity } from '../types';
 import './EntityNode.css';
 
-export interface EntityNodeProps {
+export type EntityNodeData = {
     entity: Entity;
-}
+    [key: string]: unknown;
+};
 
-export const EntityNode: FC<NodeProps<EntityNodeProps>> = memo(({ data, selected }) => {
+export type EntityNodeType = Node<EntityNodeData, 'entityNode'>;
+
+export const EntityNode: FC<NodeProps<EntityNodeType>> = memo(({ data, selected }) => {
     const { entity } = data;
 
     return (

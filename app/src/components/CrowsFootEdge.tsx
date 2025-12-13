@@ -2,7 +2,7 @@ import { memo, type FC } from 'react';
 import {
     BaseEdge,
     EdgeLabelRenderer,
-    getBezierPath,
+    getStraightPath,
     type EdgeProps,
     type Edge,
 } from '@xyflow/react';
@@ -23,34 +23,24 @@ export type CrowsFootEdgeType = Edge<CrowsFootEdgeData, 'crowsFootEdge'>;
 interface MarkerProps {
     x: number;
     y: number;
-    angle: number;
+    rotation: number; // Rotation in degrees, 0 = pointing right
     cardinality: Cardinality;
-    position: 'source' | 'target';
 }
 
 // Renders the Crow's Foot notation markers
-const CrowsFootMarker: FC<MarkerProps> = ({ x, y, angle, cardinality, position }) => {
-    // Offset from the edge endpoint
-    const offset = position === 'source' ? 15 : -15;
-    const secondOffset = position === 'source' ? 25 : -25;
-    
-    // Convert angle to radians for calculations
-    const rad = (angle * Math.PI) / 180;
-    
-    // Calculate marker positions along the edge
-    const markerX1 = x + offset * Math.cos(rad);
-    const markerY1 = y + offset * Math.sin(rad);
-    const markerX2 = x + secondOffset * Math.cos(rad);
-    const markerY2 = y + secondOffset * Math.sin(rad);
-    
-    // Perpendicular offset for the lines/crow's foot
-    const perpRad = rad + Math.PI / 2;
+// All markers are drawn as if pointing to the RIGHT (toward +X), then rotated
+const CrowsFootMarker: FC<MarkerProps> = ({ x, y, rotation, cardinality }) => {
     const lineLength = 8;
+    const footSpread = 10;
 
-    const renderZeroCircle = (cx: number, cy: number) => (
+    // Positions relative to origin (0,0), will be transformed
+    // Markers extend to the LEFT (negative X) away from the table
+    // The table is at the RIGHT side (positive X direction after rotation)
+    
+    const renderZeroCircle = (offsetX: number) => (
         <circle
-            cx={cx}
-            cy={cy}
+            cx={-offsetX}
+            cy={0}
             r={5}
             fill="white"
             stroke="#555"
@@ -58,45 +48,47 @@ const CrowsFootMarker: FC<MarkerProps> = ({ x, y, angle, cardinality, position }
         />
     );
 
-    const renderOneLine = (mx: number, my: number) => (
+    const renderOneLine = (offsetX: number) => (
         <line
-            x1={mx + lineLength * Math.cos(perpRad)}
-            y1={my + lineLength * Math.sin(perpRad)}
-            x2={mx - lineLength * Math.cos(perpRad)}
-            y2={my - lineLength * Math.sin(perpRad)}
+            x1={-offsetX}
+            y1={-lineLength}
+            x2={-offsetX}
+            y2={lineLength}
             stroke="#555"
             strokeWidth={1.5}
         />
     );
 
-    const renderCrowsFoot = (mx: number, my: number, tipX: number, tipY: number) => {
-        const footSpread = 10;
+    // Crow's foot: three lines spreading toward the table (to the left)
+    // Tip is at offsetX (closer to table), spreads out to the left
+    const renderCrowsFoot = (tipOffsetX: number) => {
+        const baseOffsetX = tipOffsetX + 12; // Base of the crow's foot (farther from table)
         return (
             <>
-                {/* Center line to tip */}
+                {/* Center line */}
                 <line
-                    x1={mx}
-                    y1={my}
-                    x2={tipX}
-                    y2={tipY}
+                    x1={-tipOffsetX}
+                    y1={0}
+                    x2={-baseOffsetX}
+                    y2={0}
                     stroke="#555"
                     strokeWidth={1.5}
                 />
                 {/* Upper foot */}
                 <line
-                    x1={mx + footSpread * Math.cos(perpRad)}
-                    y1={my + footSpread * Math.sin(perpRad)}
-                    x2={tipX}
-                    y2={tipY}
+                    x1={-tipOffsetX}
+                    y1={-footSpread}
+                    x2={-baseOffsetX}
+                    y2={0}
                     stroke="#555"
                     strokeWidth={1.5}
                 />
                 {/* Lower foot */}
                 <line
-                    x1={mx - footSpread * Math.cos(perpRad)}
-                    y1={my - footSpread * Math.sin(perpRad)}
-                    x2={tipX}
-                    y2={tipY}
+                    x1={-tipOffsetX}
+                    y1={footSpread}
+                    x2={-baseOffsetX}
+                    y2={0}
                     stroke="#555"
                     strokeWidth={1.5}
                 />
@@ -104,46 +96,57 @@ const CrowsFootMarker: FC<MarkerProps> = ({ x, y, angle, cardinality, position }
         );
     };
 
-    switch (cardinality) {
-        case 'zero-or-one':
-            // Circle (zero) + single line (one)
-            return (
-                <g className="crows-foot-marker">
-                    {renderZeroCircle(markerX2, markerY2)}
-                    {renderOneLine(markerX1, markerY1)}
-                </g>
-            );
-        
-        case 'one':
-            // Two parallel lines (exactly one, mandatory)
-            return (
-                <g className="crows-foot-marker">
-                    {renderOneLine(markerX1, markerY1)}
-                    {renderOneLine(markerX2, markerY2)}
-                </g>
-            );
-        
-        case 'zero-or-many':
-            // Circle (zero) + crow's foot (many)
-            return (
-                <g className="crows-foot-marker">
-                    {renderZeroCircle(markerX2, markerY2)}
-                    {renderCrowsFoot(markerX1, markerY1, x, y)}
-                </g>
-            );
-        
-        case 'one-or-many':
-            // Single line (one) + crow's foot (many)
-            return (
-                <g className="crows-foot-marker">
-                    {renderOneLine(markerX2, markerY2)}
-                    {renderCrowsFoot(markerX1, markerY1, x, y)}
-                </g>
-            );
-        
-        default:
-            return null;
-    }
+    const renderMarker = () => {
+        switch (cardinality) {
+            case 'zero-or-one':
+                // Single line (closer to table) + Circle (farther)
+                return (
+                    <>
+                        {renderOneLine(8)}
+                        {renderZeroCircle(18)}
+                    </>
+                );
+            
+            case 'one':
+                // Two parallel lines
+                return (
+                    <>
+                        {renderOneLine(8)}
+                        {renderOneLine(14)}
+                    </>
+                );
+            
+            case 'zero-or-many':
+                // Crow's foot (closer, pointing away) + Circle (farther)
+                return (
+                    <>
+                        {renderCrowsFoot(0)}
+                        {renderZeroCircle(26)}
+                    </>
+                );
+            
+            case 'one-or-many':
+                // Crow's foot (closer, pointing away) + Single line (farther)
+                return (
+                    <>
+                        {renderCrowsFoot(0)}
+                        {renderOneLine(24)}
+                    </>
+                );
+            
+            default:
+                return null;
+        }
+    };
+
+    return (
+        <g 
+            className="crows-foot-marker"
+            transform={`translate(${x}, ${y}) rotate(${rotation})`}
+        >
+            {renderMarker()}
+        </g>
+    );
 };
 
 export const CrowsFootEdge: FC<EdgeProps<CrowsFootEdgeType>> = memo(({
@@ -152,8 +155,6 @@ export const CrowsFootEdge: FC<EdgeProps<CrowsFootEdgeType>> = memo(({
     sourceY,
     targetX,
     targetY,
-    sourcePosition,
-    targetPosition,
     data,
     selected,
 }) => {
@@ -161,21 +162,23 @@ export const CrowsFootEdge: FC<EdgeProps<CrowsFootEdgeType>> = memo(({
     const targetCardinality = data?.targetCardinality || 'one-or-many';
     const label = data?.label;
 
-    // Get the bezier path and calculate angles at endpoints
-    const [edgePath, labelX, labelY] = getBezierPath({
+    // Use straight path for cleaner notation alignment
+    const [edgePath, labelX, labelY] = getStraightPath({
         sourceX,
         sourceY,
-        sourcePosition,
         targetX,
         targetY,
-        targetPosition,
     });
 
-    // Calculate angle at source (pointing away from source node)
-    const sourceAngle = Math.atan2(targetY - sourceY, targetX - sourceX) * (180 / Math.PI);
+    // Calculate the angle of the line (in degrees)
+    const angle = Math.atan2(targetY - sourceY, targetX - sourceX) * (180 / Math.PI);
+
+    // Source marker: rotation points toward target (table is behind, at source)
+    // So rotation = angle (pointing toward target, markers extend backward toward source table)
+    const sourceRotation = angle + 180; // Flip to point markers away from source table
     
-    // Calculate angle at target (pointing away from target node)
-    const targetAngle = Math.atan2(sourceY - targetY, sourceX - targetX) * (180 / Math.PI);
+    // Target marker: rotation points toward source (table is behind, at target)
+    const targetRotation = angle; // Points toward source, markers extend backward toward target table
 
     return (
         <>
@@ -184,22 +187,20 @@ export const CrowsFootEdge: FC<EdgeProps<CrowsFootEdgeType>> = memo(({
                 path={edgePath}
                 className={`crows-foot-edge ${selected ? 'selected' : ''}`}
             />
-            <svg className="crows-foot-markers">
+            <g className="crows-foot-markers">
                 <CrowsFootMarker
                     x={sourceX}
                     y={sourceY}
-                    angle={sourceAngle}
+                    rotation={sourceRotation}
                     cardinality={sourceCardinality}
-                    position="source"
                 />
                 <CrowsFootMarker
                     x={targetX}
                     y={targetY}
-                    angle={targetAngle}
+                    rotation={targetRotation}
                     cardinality={targetCardinality}
-                    position="target"
                 />
-            </svg>
+            </g>
             {label && (
                 <EdgeLabelRenderer>
                     <div

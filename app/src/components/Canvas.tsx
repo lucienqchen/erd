@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, type FC } from 'react';
+import { useCallback, useMemo, useState, useRef, type FC } from 'react';
 import {
     ReactFlow,
     Controls,
@@ -44,6 +44,9 @@ export const Canvas: FC<CanvasProps> = ({ className }) => {
     const [nextEntityId, setNextEntityId] = useState(1);
     const [nextEdgeId, setNextEdgeId] = useState(1);
     
+    // Ref for export functionality
+    const reactFlowRef = useRef<HTMLDivElement>(null);
+    
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isRelationshipModalOpen, setIsRelationshipModalOpen] = useState(false);
@@ -55,6 +58,11 @@ export const Canvas: FC<CanvasProps> = ({ className }) => {
 
     const nodeTypes = useMemo(() => ({ entityNode: EntityNode }), []);
     const edgeTypes = useMemo(() => ({ crowsFootEdge: CrowsFootEdge }), []);
+
+    // Get canvas element for export
+    const getCanvasElement = useCallback(() => {
+        return reactFlowRef.current?.querySelector('.react-flow__viewport') as HTMLElement | null;
+    }, []);
 
     // Get entity names for the relationship modal
     const getEntityName = useCallback((nodeId: string | null) => {
@@ -230,8 +238,8 @@ export const Canvas: FC<CanvasProps> = ({ className }) => {
     );
 
     return (
-        <div className={`canvas-wrapper ${className || ''}`}>
-            <CanvasToolbar onAddEntity={handleOpenModal} />
+        <div className={`canvas-wrapper ${className || ''}`} ref={reactFlowRef}>
+            <CanvasToolbar onAddEntity={handleOpenModal} getCanvasElement={getCanvasElement} />
             <AddTableModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
@@ -265,11 +273,6 @@ export const Canvas: FC<CanvasProps> = ({ className }) => {
                 attributionPosition="bottom-right"
             >
                 <Controls />
-                <Background 
-                    variant={BackgroundVariant.Dots}
-                    color="#aaa" 
-                    gap={16}
-                />
             </ReactFlow>
         </div>
     );
